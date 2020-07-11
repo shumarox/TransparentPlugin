@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 
 public class TransparentAction extends AnAction {
 
+    private boolean transparent = false;
+
     @Override
     public void actionPerformed(AnActionEvent e) {
         try {
@@ -15,7 +17,10 @@ public class TransparentAction extends AnAction {
             Field field = Component.class.getDeclaredField("peer");
             field.setAccessible(true);
             WindowPeer peer = (WindowPeer) field.get(frame);
-            peer.setOpacity(0.80f);
+
+            transparent = !transparent;
+            float opacity = transparent ? 0.8f : 1f;
+            peer.setOpacity(opacity);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
