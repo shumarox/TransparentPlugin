@@ -1,0 +1,33 @@
+<idea-plugin>
+  <id>ice.transparent.plugin.id</id>
+  <name>Transparent Plugin</name>
+  <version>1.0</version>
+  <vendor email="shumarox@example.com" url="https://github.com/shumarox">shumarox</vendor>
+
+  <description><![CDATA[
+      Make IDE transparent.
+    ]]></description>
+
+  <change-notes><![CDATA[
+    ]]>
+  </change-notes>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="TransparentAction" class="TransparentAction" text="Transparent">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+    </action>
+  </actions>
+
+</idea-plugin>
