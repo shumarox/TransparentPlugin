@@ -1,5 +1,6 @@
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.wm.impl.IdeFrameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -7,37 +8,30 @@ import java.awt.*;
 import java.awt.peer.WindowPeer;
 import java.lang.reflect.Field;
 
-public class TransparentAction extends AnAction {
+public class TransparentStartup implements StartupActivity {
 
     private float opacity = 1.0f;
 
-    private boolean mouseWheelListenerAdded = false;
-
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    public void runActivity(@NotNull final Project project) {
         try {
-            JFrame frame = (JFrame) ((JWindow) e.getInputEvent().getSource()).getParent();
+            JFrame frame = (JFrame) IdeFrameImpl.getActiveFrame();
             Field field = Component.class.getDeclaredField("peer");
             field.setAccessible(true);
             WindowPeer peer = (WindowPeer) field.get(frame);
 
-            opacity = opacity == 1.0f ? 0.8f : 1.0f;
-            peer.setOpacity(opacity);
-
-            if (!mouseWheelListenerAdded) {
-                frame.getJMenuBar().addMouseWheelListener(mouseWheelEvent -> {
+            frame.getJMenuBar().addMouseWheelListener(mouseWheelEvent -> {
+                // ToolsMenu -> Startup
+                SwingUtilities.invokeLater(() -> {
                     if (!mouseWheelEvent.isConsumed()) {
                         opacity = Math.max(Math.min(opacity - mouseWheelEvent.getWheelRotation() / 20f, 1.0f), 0.3f);
                         peer.setOpacity(opacity);
                         mouseWheelEvent.consume();
                     }
                 });
-
-                mouseWheelListenerAdded = true;
-            }
+            });
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
-
 }

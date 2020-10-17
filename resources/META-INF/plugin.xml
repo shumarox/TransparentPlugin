@@ -20,11 +20,10 @@
   <depends>com.intellij.modules.platform</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <postStartupActivity implementation="TransparentStartup"/>
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
     <action id="TransparentAction" class="TransparentAction" text="Transparent">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
     </action>
