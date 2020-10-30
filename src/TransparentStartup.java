@@ -31,7 +31,7 @@ public class TransparentStartup implements StartupActivity {
                 });
             });
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            // nop
         }
     }
 }
